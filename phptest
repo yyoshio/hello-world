@@ -3,4 +3,39 @@
 {* ページ固有のテンプレートを作成した場合はそちらが優先されます *}
 <section{$rcms_edit_block} class="p-news">
 
+    <h1 class="c-heading--lv1">{$page_nm}</h1>
+    {if $using_season}
+    <form action="/{if $page_sysnm ne 'top'}{$page_sysnm}/{/if}" method="get" class="form-inline">
+        {rcms_seasonOptions name=season selected=$season firstOption=true}
+        <input type="submit" value="検索" class="btn btn-primary" />
+    </form>
+    {/if}
+    <ul class="c-topics__list p-news__list">
+    {foreach from=$topicsList item=row}
+        <li class="c-topics__item">
+            {if !$row.no_use_ymd}<time class="c-topics__date" datetime="{$row.ymd}">{$row.ymd_str|date_format:"%Y.%m.%d"}</time>{/if}
+            <div class="c-topics__label">
+                {$row.contents_type_nm|escape}
+                {if $row.contents_type_cnt>1}
+                {section name=contents_type_adding loop=$row.contents_type_cnt start="1"}
+                {assign var=contents_type_colnm value="contents_type_nm_"|cat:$smarty.section.contents_type_adding.index+1}
+                {if $row.$contents_type_colnm} / {$row.$contents_type_colnm}{/if}
+                {/section}
+                {/if}
+            </div>
+            <div class="c-topics__title">
+                {if $row.link_flg eq '1'}
+                <a href="/{$link_page_sysnm}{if !$link_page_flg && $row.topics_group_id}{$row.topics_group_id}{/if}/id={$row.topics_id}">{$row.subject|escape}</a>
+                {elseif $row.link_flg eq '2'}
+                <a href="{$row.link_url}" {if $row.link_target eq '_blank'}target="_blank"{/if}>{$row.subject|escape}</a>
+                {else}
+                {$row.subject|escape}
+                {/if}
+                {if $row.new_flg}<span>new</span>{/if}
+            </div>
+        </li>
+    {/foreach}
+    </ul>
+    {rcms_include file="common/pageLinks.html" pageInfo=$pageInfo}
+
 </section>
