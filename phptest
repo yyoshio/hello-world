@@ -1,3 +1,5 @@
+# test
+
 {* ページ固有のテンプレートを作成した場合はそちらが優先されます *}
 <section{$rcms_edit_block} class="p-news">
 
