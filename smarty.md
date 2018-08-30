@@ -15,4 +15,3 @@ $smarty->assign('custid',$data);
   {$custid[foo]}<br />
 {/section}
 
-
